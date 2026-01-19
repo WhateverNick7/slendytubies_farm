@@ -7,14 +7,7 @@ workspace = cloneref(workspace)
 local Player = cloneref(game:GetService("Players")).LocalPlayer
 local CoreGui = cloneref(game:GetService('CoreGui'))
 local TweenService = cloneref(game:GetService('TweenService'))
-queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
 ReplicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
-
-Player.OnTeleport:Connect(function()
-    if queueteleport then
-        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/WhateverNick7/slendytubies_farm/main/main.luau'))()")
-    end
-end)
 
 if getconnections then
     for _, conn in pairs(getconnections(Player.Idled)) do
@@ -191,7 +184,7 @@ world.Position = UDim2.new(0.5, 0, 0.99, 0)
 world.BorderColor3 = Color3.fromRGB(0, 0, 0)
 world.BackgroundTransparency = 1
 
-fumo = game:GetService('InsertService'):CreateMeshPartAsync('rbxassetid://8222669660', Enum.CollisionFidelity.Default, Enum.RenderFidelity.Automatic)
+fumo = cloneref(game:GetService('InsertService')):CreateMeshPartAsync('rbxassetid://8222669660', Enum.CollisionFidelity.Default, Enum.RenderFidelity.Automatic)
 fumo.Parent = world
 fumo.TextureID = "rbxassetid://8222670302"
 fumo.CFrame = CFrame.new(Vector3.new(0, 0.6, -7), Vector3.new(0, 0, 1))
@@ -278,16 +271,24 @@ toggle_button.Activated:Connect(function()
                 Player.CharacterAdded:Wait()
                 task.wait(1)
             end
+            local root = get_root()
             for _,custard:Model in ipairs(workspace.game.gameCustard:GetChildren()) do
-                if not toggle then return end
+                if not toggle then break end
                 if custard and custard.Touch and custard:IsDescendantOf(workspace) and get_root() then
-                    get_root().CFrame = CFrame.new(custard.Touch.Position + Vector3.new(0,math.pi,0))
-                    repeat task.wait() until not custard or (custard and custard:IsDescendantOf(nil))
+                    repeat
+                        root.Anchored = false
+                        root.CFrame = CFrame.new(custard.Touch.Position) * CFrame.Angles(math.pi * 0.5, 0, 0)
+                        root.Anchored = true
+                        firetouchinterest(root, custard.Touch, 0)
+                        firetouchinterest(root, custard.Touch, 1)
+                        task.wait()
+                    until not custard or (custard and custard:IsDescendantOf(nil))
                     task.wait(limit)
                 end
             end
             task.wait()
         end
+        get_root().Anchored = false
     end
 end)
 
