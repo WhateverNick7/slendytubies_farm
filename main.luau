@@ -23,12 +23,12 @@ end
 
 cloneref(game:GetService('GuiService')).ErrorMessageChanged:Connect(function()
     if #Players:GetPlayers() <= 1 then
-		Player:Kick("\nRejoining...")
-		wait()
-		:Teleport(game.PlaceId, Players.LocalPlayer)
-	else
-		TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
-	end
+        Player:Kick("\nRejoining...")
+        wait()
+        TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
+    else
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
+    end
 end)
 
 local function get_char()
