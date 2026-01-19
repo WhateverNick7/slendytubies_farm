@@ -278,16 +278,16 @@ toggle_button.Activated:Connect(function()
                 Player.CharacterAdded:Wait()
                 task.wait(1)
             end
+            local root = get_root()
             for _,custard:Model in ipairs(workspace.game.gameCustard:GetChildren()) do
                 if not toggle then return end
                 if custard and custard.Touch and custard:IsDescendantOf(workspace) and get_root() then
-                    local root = get_root()
-                    root.Anchored = false
-                    root.CFrame = CFrame.new(custard.Touch.Position) * CFrame.Angles(math.pi * 0.5, 0, 0)
-                    firetouchinterest(root, custard.Touch, 0)
-                    firetouchinterest(root, custard.Touch, 1)
-                    root.Anchored = true
                     repeat
+                        root.Anchored = false
+                        root.CFrame = CFrame.new(custard.Touch.Position) * CFrame.Angles(math.pi * 0.5, 0, 0)
+                        root.Anchored = true
+                        firetouchinterest(root, custard.Touch, 0)
+                        firetouchinterest(root, custard.Touch, 1)
                         task.wait()
                         root.Anchored = true
                     until not custard or (custard and custard:IsDescendantOf(nil))
