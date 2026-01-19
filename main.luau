@@ -280,7 +280,7 @@ toggle_button.Activated:Connect(function()
             end
             local root = get_root()
             for _,custard:Model in ipairs(workspace.game.gameCustard:GetChildren()) do
-                if not toggle then return end
+                if not toggle then break end
                 if custard and custard.Touch and custard:IsDescendantOf(workspace) and get_root() then
                     repeat
                         root.Anchored = false
