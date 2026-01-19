@@ -289,14 +289,13 @@ toggle_button.Activated:Connect(function()
                         firetouchinterest(root, custard.Touch, 0)
                         firetouchinterest(root, custard.Touch, 1)
                         task.wait()
-                        root.Anchored = true
                     until not custard or (custard and custard:IsDescendantOf(nil))
                     task.wait(limit)
-                    root.Anchored = false
                 end
             end
             task.wait()
         end
+        get_root().Anchored = false
     end
 end)
 
