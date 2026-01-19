@@ -191,7 +191,7 @@ world.Position = UDim2.new(0.5, 0, 0.99, 0)
 world.BorderColor3 = Color3.fromRGB(0, 0, 0)
 world.BackgroundTransparency = 1
 
-fumo = game:GetService('InsertService'):CreateMeshPartAsync('rbxassetid://8222669660', Enum.CollisionFidelity.Default, Enum.RenderFidelity.Automatic)
+fumo = cloneref(game:GetService('InsertService')):CreateMeshPartAsync('rbxassetid://8222669660', Enum.CollisionFidelity.Default, Enum.RenderFidelity.Automatic)
 fumo.Parent = world
 fumo.TextureID = "rbxassetid://8222670302"
 fumo.CFrame = CFrame.new(Vector3.new(0, 0.6, -7), Vector3.new(0, 0, 1))
@@ -281,9 +281,13 @@ toggle_button.Activated:Connect(function()
             for _,custard:Model in ipairs(workspace.game.gameCustard:GetChildren()) do
                 if not toggle then return end
                 if custard and custard.Touch and custard:IsDescendantOf(workspace) and get_root() then
-                    get_root().CFrame = CFrame.new(custard.Touch.Position + Vector3.new(0,math.pi,0))
+                    local root = get_root()
+                    root.Anchored = false
+                    root.CFrame = CFrame.new(custard.Touch.Position + Vector3.new(0,-3,0)) * CFrame.Angles(math.pi * 0.5, 0, 0)
+                    root.Anchored = true
                     repeat task.wait() until not custard or (custard and custard:IsDescendantOf(nil))
                     task.wait(limit)
+                    root.Anchored = false
                 end
             end
             task.wait()
