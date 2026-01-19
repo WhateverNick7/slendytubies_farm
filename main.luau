@@ -283,7 +283,9 @@ toggle_button.Activated:Connect(function()
                 if custard and custard.Touch and custard:IsDescendantOf(workspace) and get_root() then
                     local root = get_root()
                     root.Anchored = false
-                    root.CFrame = CFrame.new(custard.Touch.Position + Vector3.new(0,-3,0)) * CFrame.Angles(math.pi * 0.5, 0, 0)
+                    root.CFrame = CFrame.new(custard.Touch.Position) * CFrame.Angles(math.pi * 0.5, 0, 0)
+                    firetouchinterest(root, custard.Touch, 0)
+                    firetouchinterest(root, custard.Touch, 1)
                     root.Anchored = true
                     repeat task.wait() until not custard or (custard and custard:IsDescendantOf(nil))
                     task.wait(limit)
