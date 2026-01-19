@@ -1,10 +1,10 @@
+---@diagnostic disable: undefined-global
 -- by Stonifam
--- took Auto-rejoin and Anti-AFK from Infinite Yield
+-- took Anti-AFK from Infinite Yield
 
 queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
 ReplicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
 Players = cloneref(game:GetService('Players'))
-TeleportService = cloneref(game:GetService('TeleportService'))
 local Player = Players.LocalPlayer
 
 Player.OnTeleport:Connect(function()
@@ -21,19 +21,10 @@ for _, conn in pairs(getconnections(Player.Idled)) do
     end
 end
 
-cloneref(game:GetService('GuiService')).ErrorMessageChanged:Connect(function()
-    if #Players:GetPlayers() <= 1 then
-        Player:Kick("\nRejoining...")
-        wait()
-        TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
-    else
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
-    end
-end)
-
 local function get_char()
     return Player.Character
 end
+
 local function get_root()
     local char = get_char()
     if char then
@@ -51,7 +42,7 @@ while true do
         if custard and custard.Touch and custard:IsDescendantOf(workspace) then
             get_root().CFrame = CFrame.new(custard.Touch.Position + Vector3.new(0,math.pi,0))
             repeat task.wait() until not custard or (custard and custard:IsDescendantOf(nil))
-            task.wait(0.3)
+            task.wait(1)
         end
     end
     task.wait()
