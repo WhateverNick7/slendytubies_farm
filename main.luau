@@ -7,14 +7,7 @@ workspace = cloneref(workspace)
 local Player = cloneref(game:GetService("Players")).LocalPlayer
 local CoreGui = cloneref(game:GetService('CoreGui'))
 local TweenService = cloneref(game:GetService('TweenService'))
-queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
 ReplicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
-
-Player.OnTeleport:Connect(function()
-    if queueteleport then
-        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/WhateverNick7/slendytubies_farm/main/main.luau'))()")
-    end
-end)
 
 if getconnections then
     for _, conn in pairs(getconnections(Player.Idled)) do
