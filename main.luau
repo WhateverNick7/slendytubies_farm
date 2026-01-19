@@ -27,19 +27,19 @@ if getconnections then
 end
 
 local function random_string()
-	local length = math.random(10,20)
-	local array = {}
-	for i = 1, length do
-		array[i] = string.char(math.random(32, 126))
-	end
-	return table.concat(array)
+    local length = math.random(10,20)
+    local array = {}
+    for i = 1, length do
+        array[i] = string.char(math.random(32, 126))
+    end
+    return table.concat(array)
 end
 
 local function Create(class:string, parent:Instance?):Instance
-	local a = Instance.new(class)
-	a.Name = random_string()
-	a.Parent = parent
-	return a
+    local a = Instance.new(class)
+    a.Name = random_string()
+    a.Parent = parent
+    return a
 end
 
 local parent
@@ -199,6 +199,41 @@ fumo.Size = Vector3.new(4.94755, 6.35305, 4.26022)
 fumo.Rotation = Vector3.new(180, 0, 180)
 fumo.CastShadow = false
 
+do -- drag gui by @AceFace101
+    local UIS = cloneref(game:GetService('UserInputService'))
+    local dragToggle = nil
+    local dragInput = nil
+    local dragStart = nil
+    local startPos
+    local function updateInput(input)
+        local Delta = input.Position - dragStart
+        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+        game:GetService("TweenService"):Create(canvas, TweenInfo.new(0.15), {Position = Position}):Play()
+    end
+    UIS.InputBegan:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+            dragToggle = true
+            dragStart = input.Position
+            startPos = canvas.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragToggle = false
+                end
+            end)
+        end
+    end)
+    UIS.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    UIS.InputChanged:Connect(function(input)
+        if input == dragInput and dragToggle then
+            updateInput(input)
+        end
+    end)
+end
+
 local function get_char()
     return Player.Character
 end
@@ -259,9 +294,9 @@ end)
 bpm = 142
 
 task.spawn(function()
-	while task.wait() do
-		fumo.CFrame = fumo.CFrame * CFrame.Angles(0,0.03*1,0)
-	end
+    while task.wait() do
+        fumo.CFrame = fumo.CFrame * CFrame.Angles(0,0.03*1,0)
+    end
 end)
 
 OG_Size = fumo.Size
