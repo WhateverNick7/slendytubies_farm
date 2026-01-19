@@ -6,4 +6,4 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/WhateverNick7/slendytubies_farm/main/main.luau'))()
 ```
 
-<video controls src="https://raw.githubusercontent.com/WhateverNick7/slendytubies_farm/main/demo.mp4" title="Autofarm demo"></video>
+https://github.com/user-attachments/assets/b5342533-ebbc-4033-b181-41d126fb5ad9
