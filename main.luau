@@ -1,32 +1,16 @@
 -- by Stonifam
--- took Anti-kick and Anti-AFK from Infinite Yield
+-- took Auto-rejoin and Anti-AFK from Infinite Yield
 
-local queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
-local ReplicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
-local Player = cloneref(game:GetService("Players")).LocalPlayer
+queueteleport = queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
+ReplicatedStorage = cloneref(game:GetService('ReplicatedStorage'))
+Players = cloneref(game:GetService('Players'))
+TeleportService = cloneref(game:GetService('TeleportService'))
+local Player = Players.LocalPlayer
 
 Player.OnTeleport:Connect(function()
     if queueteleport then
         queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/WhateverNick7/slendytubies_farm/main/main.luau'))()")
     end
-end)
-
-local oldhmmi
-local oldhmmnc
-if hookfunction then
-    hookfunction(Player.Kick, function() end)
-end
-oldhmmi = hookmetamethod(game, "__index", function(self, method)
-    if self == Player and method:lower() == "kick" then
-        return error("Expected ':' not '.' calling member function Kick", 2)
-    end
-    return oldhmmi(self, method)
-end)
-oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
-    if self == Player and getnamecallmethod():lower() == "kick" then
-        return
-    end
-    return oldhmmnc(self, ...)
 end)
 
 for _, conn in pairs(getconnections(Player.Idled)) do
@@ -36,6 +20,16 @@ for _, conn in pairs(getconnections(Player.Idled)) do
         conn["Disconnect"](conn)
     end
 end
+
+cloneref(game:GetService('GuiService')).ErrorMessageChanged:Connect(function()
+    if #Players:GetPlayers() <= 1 then
+		Player:Kick("\nRejoining...")
+		wait()
+		:Teleport(game.PlaceId, Players.LocalPlayer)
+	else
+		TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
+	end
+end)
 
 local function get_char()
     return Player.Character
@@ -62,5 +56,3 @@ while true do
     end
     task.wait()
 end
-
-
